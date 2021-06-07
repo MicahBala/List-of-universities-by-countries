@@ -7,13 +7,13 @@ let Header = () => {
       <nav>
         <ul className="menu">
           <li>
-            <a href="#">home</a>
+            <a href="index.html">home</a>
           </li>
           <li>
-            <a href="#">about</a>
+            <a href="index.html">about</a>
           </li>
           <li>
-            <a href="#">contact</a>
+            <a href="index.html">contact</a>
           </li>
         </ul>
       </nav>

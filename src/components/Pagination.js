@@ -6,6 +6,7 @@ const Pagination = ({ pageNumbers, handleClick, currentPage }) => {
           <ul key={pageNumber} className="pages">
             <li
               onClick={(e) => handleClick(e)}
+              // eslint-disable-next-line
               className={currentPage == pageNumber ? "active" : null}
             >
               {pageNumber}
