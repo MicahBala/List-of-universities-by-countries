@@ -1,25 +1,77 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import Header from "./components/Header";
+import Main from "./components/Main";
+import diffCountries from "./countries";
+import Pagination from "./components/Pagination";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+const App = () => {
+  const [universities, setUniversities] = useState([]);
+  const [country, setCountry] = useState("Nigeria");
+  const [loading, setLoading] = useState(true);
+
+  // for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  // Total Number of pages
+  const pageNumbers = [];
+
+  const numberOfPages = Math.ceil(universities.length / itemsPerPage);
+
+  for (let i = 1; i <= numberOfPages; i++) {
+    pageNumbers.push(i);
+  }
+
+  // Pick the last item on the whole list
+  const indexOfLastItem = currentPage * itemsPerPage;
+
+  // Pick first item on each page
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  // current active page items
+  const currentPageItems = universities.slice(
+    indexOfFirstItem,
+    indexOfLastItem
   );
-}
+
+  const handleClick = (e) => {
+    setCurrentPage(e.target.innerText);
+  };
+
+  useEffect(() => {
+    fetch(`http://universities.hipolabs.com/search?country=${country}`)
+      .then((response) => response.json())
+      .then((universities) => {
+        setUniversities(universities);
+        setLoading(false);
+      });
+  }, [country]);
+
+  const handleSelect = (value) => {
+    setCountry(value);
+  };
+
+  return (
+    <>
+      <header>
+        <Header />
+      </header>
+      <div className="container">
+        <Main
+          countries={diffCountries}
+          defaultCountry={country}
+          currentPageItems={currentPageItems}
+          handleSelect={handleSelect}
+          loading={loading}
+        />
+        <Pagination
+          pageNumbers={pageNumbers}
+          handleClick={handleClick}
+          currentPage={currentPage}
+        />
+      </div>
+    </>
+  );
+};
 
 export default App;
