@@ -44,6 +44,7 @@ const App = () => {
       .then((universities) => {
         setUniversities(universities);
         setLoading(false);
+        setItemsPerPage(10);
       });
   }, [country]);
 
